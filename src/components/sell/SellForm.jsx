@@ -86,6 +86,7 @@ function SellForm() {
         toast.warning("Make sure all fields are full");
       }
     }
+
     topOfFormRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",

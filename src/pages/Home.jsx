@@ -1,6 +1,5 @@
 import Hero from "../components/home/Hero";
 import Card from "../components/home/Card";
-import MadeWith from "../components/MadeWith";
 import { ReactComponent as BuyHome } from "../assets/svg/buy-house.svg";
 import { ReactComponent as RentHome } from "../assets/svg/rent-house.svg";
 import { ReactComponent as SellHome } from "../assets/svg/sell-house.svg";
@@ -39,7 +38,6 @@ function Home() {
           btnText={"See your options"}
         />
       </div>
-      <MadeWith />
     </div>
   );
 }

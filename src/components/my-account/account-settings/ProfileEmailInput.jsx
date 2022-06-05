@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { updateEmail } from "firebase/auth";
 import { db, auth } from "../../../firebase.config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -13,8 +13,11 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
     confirm: "",
   });
 
+  const modalRef = useRef();
+
   const openEmailModal = () => {
     setActiveModal("email");
+    modalRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const closeEmailModal = () => {
     setActiveModal(null);
@@ -75,6 +78,7 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
         <div className="flex items-center">
           <p className="text-center mr-7">{emailForm.current}</p>
           <p
+            ref={modalRef}
             onClick={openEmailModal}
             className="transition p-1 mr-7 text-sm font-semibold text-center underline cursor-pointer text-green-500 hover:scale-105"
           >

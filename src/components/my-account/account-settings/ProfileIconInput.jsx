@@ -23,16 +23,6 @@ function ProfileIconInput({ edit, handleFormChange }) {
     profilePicture5,
   ];
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, "users", auth.currentUser.uid);
-        const activeIcon = await getDoc(docRef);
-        setProfileIcon(activeIcon.data().photo);
-      }
-    });
-  }, []);
-
   const toggleIconModal = () => {
     setSelector(!selector);
   };

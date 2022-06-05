@@ -34,6 +34,10 @@ function MarketNav({ type, location }) {
     setValue("");
   };
 
+  const handlePriceFilter = () => {
+    alert("doesn't work yet");
+  };
+
   const checkIfSaved = async () => {
     if (auth.currentUser) {
       const userRef = await getDoc(doc(db, "users", auth.currentUser.uid));
@@ -214,6 +218,7 @@ function MarketNav({ type, location }) {
           </>
         )}
         <button
+          onClick={handlePriceFilter}
           type="button"
           className="transition h-8 px-6 text-xs font-semibold text-green-600 border-green-600 border-[1px] rounded-sm hover:text-black hover:border-black hover:bg-green-500/10"
         >

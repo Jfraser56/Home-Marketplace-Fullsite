@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { geohashForLocation } from "geofire-common";
 import FormPage1 from "./FormPage1";
 import FormPage2 from "./FormPage2";
 import FormPage3 from "./FormPage3";
-import FormPage4 from "./FormPage4";
+import { auth, db } from "../../firebase.config";
+import {
+  doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
+import { nanoid } from "nanoid";
 
 function SellForm() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     type: "",
     price: "",
@@ -30,7 +40,16 @@ function SellForm() {
     remodelYear: "",
     desc: "",
     images: "",
+    userRef: auth.currentUser.uid,
+    name: "",
+    views: 0,
+    saves: 0,
+    timestamp: serverTimestamp(),
   });
+
+  const topOfFormRef = useRef();
+
+  const navigate = useNavigate();
 
   const handleNextStep = async () => {
     if (step === 1) {
@@ -63,12 +82,14 @@ function SellForm() {
         toast.warning("Choose a home type");
       }
     } else if (step === 3) {
-      if (formData.price && formData.images.length) {
-        setStep(step + 1);
-      } else {
+      if (!formData.price && formData.images.length) {
         toast.warning("Make sure all fields are full");
       }
     }
+    topOfFormRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const handleFormChange = (e) => {
@@ -85,17 +106,50 @@ function SellForm() {
       e.target.id === "lotSize" ||
       e.target.id === "price"
     ) {
-      const re = /[^0-9]/;
+      const re = /[^0-9,.]/;
       value = value.replace(re, "");
+    }
+    //Capitalize town names for query searches with google places
+    if (e.target.id === "town") {
+      value = value.replace(/\b\w/g, (town) => town.toUpperCase());
+      console.log(value);
     }
 
     setFormData({ ...formData, [e.target.id]: value });
   };
 
+  const uploadListing = async (e) => {
+    e.preventDefault();
+    const listingID = nanoid();
+
+    // Upload listing to database and add it to user's listing page
+    try {
+      const listingRef = doc(db, "listings", listingID);
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      await setDoc(listingRef, formData);
+      await updateDoc(userRef, {
+        listings: arrayUnion(listingID),
+      });
+    } catch (error) {
+      toast.error("An error occurred, listing not posted");
+    }
+
+    navigate(`/homes/home-details/${listingID}`);
+  };
+
+  useEffect(async () => {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const result = await getDoc(docRef);
+    setFormData({ ...formData, name: result.data().name });
+  }, []);
+
   return (
     <div className="mx-auto w-[60rem]">
-      <h3 className="text-center my-16 font-notoSerif text-xl font-bold">
-        Just four easy steps
+      <h3
+        ref={topOfFormRef}
+        className="text-center py-16 font-notoSerif text-xl font-bold"
+      >
+        Just three easy steps
       </h3>
 
       <div className="flex items-center justify-center">
@@ -127,18 +181,11 @@ function SellForm() {
         >
           3
         </div>
-        <div
-          style={{ background: step > 3 ? "#66b266" : "#d1d5db" }}
-          className="w-60 h-2"
-        ></div>
-        <div
-          style={{ background: step > 3 ? "#66b266" : "#d1d5db" }}
-          className="h-7 w-7 rounded-full text-center pt-[1px] text-white cursor-default bg-green-500"
-        >
-          4
-        </div>
       </div>
-      <form className="mt-16 w-full space-y-8 ">
+      <form
+        onSubmit={(e) => uploadListing(e)}
+        className="mt-16 w-full space-y-8 "
+      >
         {step === 1 ? (
           <FormPage1
             handleFormChange={handleFormChange}
@@ -147,14 +194,12 @@ function SellForm() {
           />
         ) : step === 2 ? (
           <FormPage2 handleFormChange={handleFormChange} formData={formData} />
-        ) : step === 3 ? (
+        ) : (
           <FormPage3
             handleFormChange={handleFormChange}
             formData={formData}
             setFormData={setFormData}
           />
-        ) : (
-          <FormPage4 />
         )}
       </form>
       <div className="flex justify-center space-x-4 w-full my-12">
@@ -167,7 +212,7 @@ function SellForm() {
             Back
           </button>
         )}
-        {step < 4 && (
+        {step < 3 && (
           <button
             onClick={handleNextStep}
             type="button"

@@ -8,7 +8,7 @@ function Sell() {
           Sell your home with ease
         </h1>
         <h3 className="text-xl font-light">
-          Zillow is making it simpler to sell your home and move forward
+          We make it simpler to sell your home and move forward
         </h3>
       </header>
       <SellForm />

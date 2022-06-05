@@ -10,14 +10,18 @@ function DeleteAccount() {
   const handleDeleteAccount = async () => {
     if (window.confirm("Are you sure?")) {
       try {
-        await deleteUser(auth.currentUser);
         await deleteDoc(doc(db, "users", auth.currentUser.uid));
+        await deleteUser(auth.currentUser);
         toast.success("Account Deleted");
         navigate("/");
         window.scrollTo(0, 0);
       } catch (error) {
-        toast.error("Something went wrong");
-        console.log(error);
+        if (error.code === "auth/requires-recent-login") {
+          toast.error("Requires recent log in");
+        } else {
+          toast.error("Something went wrong");
+          console.log(error);
+        }
       }
     }
   };
@@ -33,7 +37,7 @@ function DeleteAccount() {
       <button
         onClick={handleDeleteAccount}
         type="button"
-        className="mr-7 h-10 px-4 font-bold border-[1px] outline-none border-red-500 rounded-sm text-red-500 bg-red-500/0 hover:bg-red-500 hover:text-white duration-300"
+        className="mr-7 h-10 px-4 font-bold border-[1px] outline-none border-red-600 rounded-sm text-red-600 bg-red-600/0 hover:bg-red-600 hover:text-white duration-300"
       >
         Delete
       </button>

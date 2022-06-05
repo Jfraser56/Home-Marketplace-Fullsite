@@ -23,13 +23,13 @@ function ProfileIcon() {
   return (
     <>
       <div
-        className="transition w-9 h-9 rounded-full overflow-hidden cursor-pointer hover:scale-110 "
+        className="transition w-9 h-9 rounded-full overflow-hidden cursor-pointer hover:scale-110"
         onClick={toggleProfileDropDown}
       >
         <img
           className="drop-down scale-110"
           src={profileIcon ? profileIcons[profileIcon] : defaultIcon}
-          alt="Avatar"
+          alt="profile-icon"
         />
       </div>
       <ProfileDropDown active={profileDropDown} />

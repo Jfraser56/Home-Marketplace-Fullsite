@@ -33,10 +33,10 @@ function FormPage2({ handleFormChange, formData }) {
             id="homeType"
           >
             <option></option>
-            <option>Single Family</option>
+            <option>Single Family Home</option>
             <option>Condo</option>
             <option>Town House</option>
-            <option>Multi Family</option>
+            <option>Multi Family Home</option>
             <option>Apartment</option>
           </select>
         </div>
@@ -147,7 +147,6 @@ function FormPage2({ handleFormChange, formData }) {
             id="buildYear"
           >
             <option></option>
-            <option>N/A</option>
             {years.map((year) => (
               <option key={year}>{year}</option>
             ))}
@@ -164,7 +163,6 @@ function FormPage2({ handleFormChange, formData }) {
             id="remodelYear"
           >
             <option></option>
-            <option>N/A</option>
             {years.map((year) => (
               <option key={year}>{year}</option>
             ))}

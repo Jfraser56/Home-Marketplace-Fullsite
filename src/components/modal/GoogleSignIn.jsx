@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ReactComponent as GoogleLogo } from "../../assets/svg/google-logo.svg";
 import { auth, db } from "../../firebase.config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -7,7 +7,7 @@ import ModalContext from "../../context/ModalContext";
 import { toast } from "react-toastify";
 
 function GoogleSignIn() {
-  const { setToggleModal } = useContext(ModalContext);
+  const { setToggleSignInModal } = useContext(ModalContext);
 
   const provider = new GoogleAuthProvider();
 
@@ -15,21 +15,27 @@ function GoogleSignIn() {
     try {
       await signInWithPopup(auth, provider);
       const docSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
-      //If user exists - dont update timestamp
+      //If user does not exist already then setDoc
       if (!docSnap.exists()) {
         await setDoc(doc(db, "users", auth.currentUser.uid), {
+          name: auth.currentUser.displayName,
+          screenname: "",
           email: auth.currentUser.email,
-          timestamp: serverTimestamp(),
+          photo: "",
+          listings: [],
           savedListings: [],
+          savedSearches: [],
+          timestamp: serverTimestamp(),
         });
       }
 
-      setToggleModal(false);
+      setToggleSignInModal(false);
     } catch (error) {
       //Handling 2 specific errors
       if (error.code !== "auth/cancelled-popup-request") {
         if (error.code !== "auth/popup-closed-by-user") {
           toast.error("Could not authorize with Google");
+          console.log(error);
         }
       }
     }

@@ -28,7 +28,7 @@ function MapContainer({ type, location, setMapBounds, listings }) {
     ],
   };
 
-  //Sets current location data from useEffect
+  //Sets map position
   const setMapPosition = ({ lat, lng }) => {
     const search = { location, lat, lng };
 
@@ -55,55 +55,29 @@ function MapContainer({ type, location, setMapBounds, listings }) {
   };
 
   const handleGeoCodeSearch = () => {
+    const lastSearch = window.sessionStorage.getItem("last-search");
+
     //Avoids GeoCode when repeating a search
-    if (location !== "recent") {
-      //If no previous search is available, set session storage to current search
-      if (!window.sessionStorage.getItem("last-search")) {
-        fetchGeoLocation();
-        console.log("set last search");
-      } else {
-        //If previous search is available, and not the same as current search, then set session storage to current
-        if (
-          JSON.parse(window.sessionStorage.getItem("last-search")).location !==
-          location
-        ) {
-          console.log("didnt match so set new");
-          fetchGeoLocation();
-        } else {
-          //This means that current search is the same as previous search, and will avoid Geocode function call
-          console.log("saving money");
-          setMapPosition({
-            lat: JSON.parse(window.sessionStorage.getItem("last-search")).lat,
-            lng: JSON.parse(window.sessionStorage.getItem("last-search")).lng,
-          });
-        }
-      }
-    } else {
-      //If a recent search is available, set buy page to last search
-      if (window.sessionStorage.getItem("last-search")) {
+    if (location === "recent" || lastSearch === location) {
+      //If a recent search is available, set map container and listing panel to last search, else map will default to Boston, MA, USA
+      if (lastSearch) {
+        //LINK THIS TO SETMAPPOSITION FUNCTION
         setCenter({
-          lat: JSON.parse(window.sessionStorage.getItem("last-search")).lat,
-          lng: JSON.parse(window.sessionStorage.getItem("last-search")).lng,
+          lat: JSON.parse(lastSearch).lat,
+          lng: JSON.parse(lastSearch).lng,
         });
       }
+      console.log("sabing money");
+      setExpandBoundsOnIdle(true);
+    } else {
+      //If no previous search is available, or previous search does not match current search, then set session storage to current search
+      if (!lastSearch || JSON.parse(lastSearch).location !== location) {
+        fetchGeoLocation();
+        console.log("set last-search in session storage");
+      }
+      setExpandBoundsOnIdle(false);
     }
   };
-
-  //Map to new location when location changes on new search
-  useEffect(() => {
-    if (isMounted.current) {
-      handleGeoCodeSearch();
-      setExpandBoundsOnIdle(false);
-      setMapBounds([]);
-    }
-  }, [location]);
-
-  //When user clicks on map, expandBoundsOnIdle is set to true and map fetches all listings with radius of center
-  useEffect(() => {
-    if (expandBoundsOnIdle) {
-      expandBoundsAroundCenter();
-    }
-  }, [expandBoundsOnIdle]);
 
   //Gets the listings within certain radius of center if component is mounted and expandBoundsOnIdle is true
   const expandBoundsAroundCenter = () => {
@@ -115,16 +89,6 @@ function MapContainer({ type, location, setMapBounds, listings }) {
       setMapBounds(geohashQueryBounds(draggedLocation, 15000)); // finds all listings within 10km of center
     }
   };
-
-  //Cleanup function
-  useEffect(() => {
-    console.log("mounted");
-
-    return () => {
-      isMounted.current = false;
-      console.log("unmounted");
-    };
-  }, [isMounted]);
 
   const onLoad = (map) => {
     console.log("loaded");
@@ -155,6 +119,12 @@ function MapContainer({ type, location, setMapBounds, listings }) {
     });
   };
 
+  const handleClick = (e) => {
+    setExpandBoundsOnIdle(true);
+    mapRef.current.panTo({ lat: e.latLng.lat(), lng: e.latLng.lng() }); //THIS IS GOING TO GET USED TO PAN TO SPOT ON MAP WHEN USER CLICKS ON LISTING PANEL ---
+    // mapRef.current.setZoom(14);
+  };
+
   //When the visible listings changes, update map markers
   useEffect(() => {
     //Clear old markers
@@ -166,11 +136,30 @@ function MapContainer({ type, location, setMapBounds, listings }) {
     addNewMarkers();
   }, [listings]);
 
-  const handleClick = (e) => {
-    setExpandBoundsOnIdle(true);
-    mapRef.current.panTo({ lat: e.latLng.lat(), lng: e.latLng.lng() }); //THIS IS GOING TO GET USED TO PAN TO SPOT ON MAP WHEN USER CLICKS ON LISTING PANEL ---
-    // mapRef.current.setZoom(14);
-  };
+  //Map to new location when location changes on new search
+  useEffect(() => {
+    if (isMounted.current) {
+      setMapBounds([]);
+      handleGeoCodeSearch();
+    }
+  }, [location]);
+
+  //When user clicks on map, expandBoundsOnIdle is set to true and map fetches all listings with radius of center
+  useEffect(() => {
+    if (expandBoundsOnIdle) {
+      expandBoundsAroundCenter();
+    }
+  }, [expandBoundsOnIdle]);
+
+  //Cleanup function
+  useEffect(() => {
+    console.log("mounted");
+
+    return () => {
+      isMounted.current = false;
+      console.log("unmounted");
+    };
+  }, [isMounted]);
 
   return (
     <div className="w-auto h-full lg:pr-[25rem] xl:pr-[47rem] sm:w-0 lg:w-full">

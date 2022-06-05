@@ -70,7 +70,7 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
   };
 
   return (
-    <div className=" mx-auto p-20 pt-12 bg-white border border-gray-300 shadow">
+    <div className=" mx-auto p-20 py-12 bg-white border border-gray-300 shadow">
       <h1 className="text-center text-3xl text-gray-600">
         Show your <span className="text-green-600/80">Listing</span>
       </h1>
@@ -141,6 +141,12 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
           </label>
         </div>
       </div>
+      <button
+        type="submit"
+        className="transition block mt-10 mx-auto px-8 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700"
+      >
+        Publish
+      </button>
     </div>
   );
 }

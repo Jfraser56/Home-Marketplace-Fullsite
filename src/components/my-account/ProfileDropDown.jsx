@@ -12,7 +12,7 @@ function ProfileDropDown({ active }) {
 
   return (
     <div
-      className={`drop-down transition duration-300 absolute py-3 rounded-l-md top-20 w-80 z-20 bg-slate-50 -right-80 ${
+      className={`drop-down transition duration-300 absolute  rounded-l border top-20 w-80 z-20 bg-white -right-80 ${
         active && "-translate-x-80"
       }`}
     >
@@ -21,7 +21,7 @@ function ProfileDropDown({ active }) {
           onClick={() => {
             navigate("/my-account/saved-homes");
           }}
-          className="transition p-3 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
         >
           Saved homes
         </li>
@@ -29,7 +29,7 @@ function ProfileDropDown({ active }) {
           onClick={() => {
             navigate("/my-account/manage-listings");
           }}
-          className="transition p-3 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
         >
           Manage your listings
         </li>
@@ -37,14 +37,14 @@ function ProfileDropDown({ active }) {
           onClick={() => {
             navigate("/my-account/profile-settings");
           }}
-          className="transition p-3 mb-2 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
         >
           Profile Settings
         </li>
         <li className="transition h-[2px] mx-auto bg-gray-200 cursor-pointer font-notoSans font-light"></li>
         <li
           onClick={logOut}
-          className="transition p-3 mt-2 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
         >
           Sign out
         </li>

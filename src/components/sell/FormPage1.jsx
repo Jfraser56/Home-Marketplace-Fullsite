@@ -5,7 +5,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
   return (
     <div className=" mx-auto p-20 pt-12 bg-white border border-gray-300 shadow">
       <h1 className="text-center text-3xl text-gray-600">
-        Add your <span className="text-green-600/80">property</span>
+        Add your <span className="text-green-600">property</span>
       </h1>
       <p className="text-center text-lg font-light mt-4">
         Reach millions of buyers. <br /> Sign leases. Set up rent payments.
@@ -15,7 +15,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
           onClick={() => setFormData({ ...formData, type: "sale" })}
           type="button"
           className={`transition flex items-center justify-center w-44 h-14 border border-gray-400 rounded hover:bg-gray-100 ${
-            formData.type === "sale" && "bg-green-700/30 shadow"
+            formData.type === "sale" && "bg-green-600/50 shadow"
           }  `}
         >
           <BsHouseDoor className="mr-2" size={"1.3rem"} />
@@ -25,7 +25,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
           onClick={() => setFormData({ ...formData, type: "rent" })}
           type="button"
           className={`transition flex items-center justify-center w-44 h-14 border border-gray-400 rounded hover:bg-gray-100 ${
-            formData.type === "rent" && "bg-green-700/30 shadow"
+            formData.type === "rent" && "bg-green-600/50 shadow"
           }`}
         >
           <BsBuilding className="mr-2" size={"1.3rem"} />

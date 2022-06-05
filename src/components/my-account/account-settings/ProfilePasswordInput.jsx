@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { auth } from "../../../firebase.config";
 import { updatePassword } from "firebase/auth";
 import { IoMdClose } from "react-icons/io";
@@ -12,8 +12,11 @@ function ProfilePasswordInput({ activeModal, setActiveModal }) {
     confirm: "",
   });
 
+  const modalRef = useRef();
+
   const openPassModal = () => {
     setActiveModal("password");
+    modalRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const closePassModal = () => {
@@ -67,6 +70,7 @@ function ProfilePasswordInput({ activeModal, setActiveModal }) {
         </p>
       </div>
       <button
+        ref={modalRef}
         onClick={openPassModal}
         className="mr-7 h-10 px-3 font-semibold border-[1px] outline-none border-green-600 rounded-sm text-green-600 bg-green-600/0 hover:bg-green-600 hover:text-white duration-300"
         type="button"

@@ -39,7 +39,7 @@ function App() {
     }
   };
 
-  // console.log("render");
+  console.log("render");
 
   return isLoaded ? (
     <div
@@ -52,7 +52,10 @@ function App() {
       {toggleSignInModal && <Modal className="transition duration-700" />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/sell" element={<Sell />} />
+        <Route path="/sell" element={<PrivateRoute />}>
+          <Route path="/sell" element={<Sell />} />
+        </Route>
+
         <Route path="/homes/:type/:location" element={<Market />} />
         <Route path="/homes/home-details/:listingID" element={<Listing />} />
         <Route path="/explore" element={<Explore />} />

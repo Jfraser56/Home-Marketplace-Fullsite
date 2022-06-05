@@ -7,7 +7,7 @@ const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profileDropDown, setProfileDropDown] = useState(false);
-  const [profileIcon, setProfileIcon] = useState();
+  const [profileIcon, setProfileIcon] = useState("");
 
   const toggleProfileDropDown = () => {
     setProfileDropDown(!profileDropDown);
@@ -20,8 +20,12 @@ export const ProfileProvider = ({ children }) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const docRef = doc(db, "users", auth.currentUser.uid);
-        const activeIcon = await getDoc(docRef);
-        setProfileIcon(activeIcon.data().photo);
+        const result = await getDoc(docRef);
+        if (result.data() !== undefined) {
+          setProfileIcon(result.data().photo);
+        } else {
+          setProfileIcon("");
+        }
       }
     });
   }, []);

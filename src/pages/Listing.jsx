@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
-import { getDoc, doc } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db, auth } from "../firebase.config";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Spinner from "../components/shared/Spinner";
 import {
   BsArrowLeft,
@@ -12,76 +19,97 @@ import {
   BsTree,
   BsCheck2Circle,
 } from "react-icons/bs";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { ReactComponent as FooterImg } from "../assets/svg/footer.svg";
 import IndividualListingMap from "../components/market/IndividualListingMap";
 import { BiBed, BiBath, BiCar } from "react-icons/bi";
 import { MdOutlineStairs } from "react-icons/md";
 import { RiRuler2Line } from "react-icons/ri";
+
 function Listing() {
   const [listingData, setListingData] = useState("");
+  const [listingSaved, setListingSaved] = useState(false);
   const [fullDescription, setFullDescription] = useState(false);
 
   const { listingID } = useParams();
-
-  useEffect(async () => {
-    const docRef = await getDoc(doc(db, "listings", listingID));
-
-    setListingData(docRef.data());
-  }, []);
 
   const handleContactOwner = (e) => {
     e.preventDefault();
   };
 
-  console.log(listingData);
+  const handleSaveListing = () => {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const listingRef = doc(db, "listings", listingID);
 
-  // const checkIfSaved = async () => {
-  //   if (auth.currentUser) {
-  //     const userRef = await getDoc(doc(db, "users", auth.currentUser.uid));
-  //     const result = await userRef
-  //       .data()
-  //       .savedListings.some(
-  //         (listing) =>
-  //           listing.address === address &&
-  //           listing.town === town &&
-  //           listing.zip === zip
-  //       );
-  //     setListingSaved(result);
-  //   }
-  // };
+    if (!listingSaved) {
+      try {
+        updateDoc(userRef, {
+          savedListings: arrayUnion(listingID),
+        });
+        setListingSaved(true);
+        addOrRemoveSave();
+        toast.success("Listing saved!");
+      } catch (error) {
+        toast.error("An error occurred");
+      }
+    } else {
+      try {
+        updateDoc(userRef, {
+          savedListings: arrayRemove(listingID),
+        });
+        setListingSaved(false);
+        addOrRemoveSave();
+        toast.success("Listing no longer saved");
+      } catch (error) {
+        toast.error("An error occurred");
+      }
+    }
+  };
 
-  // const handleSaveSearch = async () => {
-  //   if (!searchSaved) {
-  //     try {
-  //       const docRef = doc(db, "users", auth.currentUser.uid);
-  //       updateDoc(docRef, {
-  //         savedSearches: arrayUnion({ location, type, price: "price" }),
-  //       });
-  //       setSearchSaved(true);
-  //       toast.success("Search added to saved searches!");
-  //     } catch (error) {
-  //       toast.error("An error occurred");
-  //     }
-  //   } else {
-  //     try {
-  //       const docRef = doc(db, "users", auth.currentUser.uid);
-  //       updateDoc(docRef, {
-  //         savedSearches: arrayRemove({ location, type, price: "price" }),
-  //       });
-  //       setSearchSaved(false);
-  //       toast.success("Search removed");
-  //     } catch (error) {
-  //       toast.error("An error occurred");
-  //     }
-  //   }
-  // };
+  const checkIfSaved = async () => {
+    if (auth.currentUser) {
+      const userRef = await getDoc(doc(db, "users", auth.currentUser.uid));
+      const result = await userRef
+        .data()
+        .savedListings.some((listing) => listing === listingID);
+      setListingSaved(result);
+    }
+  };
+
+  //Keeps track of how many views a listing recieves
+  const addView = (listing, docRef) => {
+    updateDoc(docRef, {
+      views: listing.data().views + 1,
+    });
+  };
+  //Keeps track of how many saves a listing recieves
+  const addOrRemoveSave = async () => {
+    const listingRef = doc(db, "listings", listingID);
+    const result = await getDoc(listingRef);
+    if (!listingSaved) {
+      updateDoc(listingRef, {
+        saves: result.data().saves + 1,
+      });
+    } else {
+      updateDoc(listingRef, {
+        saves: result.data().saves - 1,
+      });
+    }
+  };
+
+  useEffect(async () => {
+    const docRef = doc(db, "listings", listingID);
+    const result = await getDoc(docRef);
+    setListingData(result.data());
+    addView(result, docRef);
+    checkIfSaved();
+  }, []);
 
   return listingData ? (
     <div className="flex border-t border-gray-300 overflow-hidden">
-      <div className="grid grid-cols-2 gap-1 overflow-y-scroll p-1">
+      <div className="grid grid-cols-2 gap-1 overflow-y-scroll p-1 w-full">
         <img
-          className="col-span-2 w-auto h-full object-cover object-center rounded"
+          className="col-span-2 mx-auto w-auto h-full object-cover object-center rounded"
           src={listingData.images[0]}
           alt="header-image"
         />
@@ -97,27 +125,38 @@ function Listing() {
       <div className="w-[110rem] h-auto bg-white overflow-y-scroll">
         <nav className="sticky top-0 flex items-center justify-between w-auto h-20 p-5 bg-white border-b border-gray-300 shadow z-10">
           <Link
-            to={`/homes/${listingData.type}/${listingData.town}, ${listingData.state}, USA`}
-            type="button"
-            className="transition group flex items-center font-semibold text-gray-600 hover:text-green-600"
+            to={`/homes/${listingData.type}/recent`}
+            className="transition group flex items-center text-gray-600 hover:text-green-600 "
           >
             <BsArrowLeft
               size="1.3rem"
               strokeWidth="0.7px"
-              className="fill-gray-600 stroke-gray-600 mr-3 group-hover:fill-green-600 group-hover:stroke-green-600 "
+              className="fill-gray-600 stroke-gray-600 mr-3 group-hover:fill-green-600 group-hover:stroke-green-600"
             />
-            All listings in {listingData.town}
+            Back to map
           </Link>
-          <button
-            type="button"
-            className="group flex items-center text-green-600 mr-3"
-          >
-            <FaRegHeart size="1.2rem" className="mr-1" />
-            <span className="group-hover:underline">Save</span>
-          </button>
+          {auth.currentUser && (
+            <button
+              onClick={handleSaveListing}
+              type="button"
+              className="group flex items-center text-green-600 mr-3"
+            >
+              {listingSaved ? (
+                <>
+                  <FaHeart size="1.2rem" className="mr-1" />
+                  <span className="group-hover:underline">Saved</span>
+                </>
+              ) : (
+                <>
+                  <FaRegHeart size="1.2rem" className="mr-1" />
+                  <span className="group-hover:underline">Save</span>
+                </>
+              )}
+            </button>
+          )}
         </nav>
         <main className="px-8 pt-5 h-auto space-y-5">
-          <h1 className="text-5xl font-semibold mr-5">$800,000</h1>
+          <h1 className="text-5xl font-semibold mr-5">${listingData.price}</h1>
           <div className="flex items-center">
             {listingData.bed && (
               <div className="flex items-center font-light px-3 py-1 mr-3 border border-gray-300 rounded shadow">
@@ -154,8 +193,8 @@ function Listing() {
                   listingData.type === "sale"
                     ? "#ef4444"
                     : listingData.rent === "rent"
-                    ? "#9333ea"
-                    : "#facc15"
+                    ? "#facc15"
+                    : "#9333ea"
                 }
               />{" "}
               For {listingData.type}
@@ -174,14 +213,16 @@ function Listing() {
           <div className="flex items-center">
             <h1 className="text-2xl font-semibold mr-4">Overview</h1>
             <span className="font-light px-4 border-x border-gray-300">
-              Listed by Zillow user:{" "}
-              <span className="font-bold">EYeager123</span>
+              Listed by: <span className="font-bold">{listingData.name}</span>
             </span>
             <span className="font-light px-4 border-r border-gray-300">
-              Posted: <span className="font-bold">5 hours ago</span>
+              Posted on:{" "}
+              <span className="font-bold">
+                {listingData.timestamp.toDate().toString().slice(4, 15)}
+              </span>
             </span>
             <span className="font-light px-4 border-r border-gray-300">
-              Saves: <span className="font-bold">9</span>
+              Saves: <span className="font-bold">{listingData.saves}</span>
             </span>
           </div>
           <div className="w-full py-5 px-8 border rounded shadow overflow-hidden text-gray-600">
@@ -254,10 +295,16 @@ function Listing() {
                 Finished basement
               </li>
             )}
-            <li className="flex items-center">
-              <BsCalendarCheck size="1.4rem" className="fill-green-600 mr-2" />{" "}
-              Built in {listingData.buildYear}
-            </li>
+            {listingData.buildYear && (
+              <li className="flex items-center">
+                <BsCalendarCheck
+                  size="1.4rem"
+                  className="fill-green-600 mr-2"
+                />{" "}
+                Built in {listingData.buildYear}
+              </li>
+            )}
+
             {listingData.remodelYear && (
               <li className="flex items-center">
                 <BsCheck2Circle size="1.5rem" className="fill-green-600 mr-2" />{" "}
@@ -273,34 +320,34 @@ function Listing() {
             className="p-10 pt-4 space-y-5 border bg-white rounded overflow-hidden shadow"
           >
             <div className="space-y-3">
-              <label className="text-sm font-semibold" htmlFor="address">
+              <label className="text-sm font-semibold" htmlFor="contact-name">
                 Name
               </label>
               <input
                 className="block w-full h-10 p-3 rounded-lg bg-gray-50 border border-gray-300 focus:outline focus:outline-green-700"
-                id="address"
+                id="contact-name"
                 type="text"
               />
             </div>
             <div className="space-y-3">
-              <label className="text-sm font-semibold" htmlFor="address">
+              <label className="text-sm font-semibold" htmlFor="contact-email">
                 Email
               </label>
               <input
                 className="block w-full h-10 p-3 rounded-lg bg-gray-50 border border-gray-300 focus:outline focus:outline-green-700"
-                id="address"
+                id="contact-email"
                 type="email"
               />
             </div>
             <div className="space-y-3">
-              <label className="text-sm font-semibold" htmlFor="address">
+              <label className="text-sm font-semibold" htmlFor="contact-msg">
                 Message
               </label>
               <textarea
                 type="text"
                 placeholder={`I am interested in ${listingData.address}, ${listingData.town}, ${listingData.state} ${listingData.zip} `}
                 className="block w-full h-32 p-3 rounded-lg bg-gray-50 border border-gray-300 focus:outline focus:outline-green-700 resize-none"
-                id="desc"
+                id="contact-msg"
               />
             </div>
             <button
@@ -312,7 +359,10 @@ function Listing() {
           </form>
         </main>
         <footer className="mt-20 text-center">
-          <p className="mb-10 italic">House Marketplace &copy; 2022</p>
+          <p className="mb-10 font-bold">
+            SellYour<span className=" text-green-600">Place </span>
+            <span className="font-normal">&copy; 2022</span>
+          </p>
           <FooterImg className="pb-7" />
         </footer>
       </div>

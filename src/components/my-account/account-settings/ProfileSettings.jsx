@@ -63,7 +63,7 @@ function ProfileSettings() {
   return (
     <form
       onSubmit={handleFormSubmit}
-      className="w-full p-10 bg-white border-[1px] border-gray-300"
+      className="w-full h-auto p-10 bg-white border-[1px] border-gray-300"
     >
       <div className="flex items-center space-x-5 mb-5">
         <h1 className="font-medium text-2xl ">Profile Info</h1>

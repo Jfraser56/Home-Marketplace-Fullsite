@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
@@ -40,7 +40,7 @@ function SellForm() {
     remodelYear: "",
     desc: "",
     images: "",
-    userRef: auth.currentUser.uid,
+    ownerRef: auth.currentUser.uid,
     name: "",
     views: 0,
     saves: 0,
@@ -48,7 +48,6 @@ function SellForm() {
   });
 
   const topOfFormRef = useRef();
-
   const navigate = useNavigate();
 
   const handleNextStep = async () => {
@@ -122,12 +121,13 @@ function SellForm() {
   const uploadListing = async (e) => {
     e.preventDefault();
     const listingID = nanoid();
+    const listingRef = doc(db, "listings", listingID);
+    const userRef = doc(db, "users", auth.currentUser.uid);
 
     // Upload listing to database and add it to user's listing page
     try {
-      const listingRef = doc(db, "listings", listingID);
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      await setDoc(listingRef, formData);
+      const user = await getDoc(userRef);
+      await setDoc(listingRef, { ...formData, name: user.data().name });
       await updateDoc(userRef, {
         listings: arrayUnion(listingID),
       });
@@ -137,12 +137,6 @@ function SellForm() {
 
     navigate(`/homes/home-details/${listingID}`);
   };
-
-  useEffect(async () => {
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    const result = await getDoc(docRef);
-    setFormData({ ...formData, name: result.data().name });
-  }, []);
 
   return (
     <div className="mx-auto w-[60rem]">
@@ -203,6 +197,7 @@ function SellForm() {
           />
         )}
       </form>
+
       <div className="flex justify-center space-x-4 w-full my-12">
         {step > 1 && (
           <button

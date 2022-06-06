@@ -1,13 +1,20 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase.config";
-import { onAuthStateChanged } from "firebase/auth";
 
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
-  const [profileDropDown, setProfileDropDown] = useState(false);
+  const [user, setUser] = useState();
   const [profileIcon, setProfileIcon] = useState("");
+  const [profileDropDown, setProfileDropDown] = useState(false);
+
+  const getUser = async () => {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const user = await getDoc(userRef);
+    setUser(user.data());
+    setProfileIcon(user.data().photo);
+  };
 
   const toggleProfileDropDown = () => {
     setProfileDropDown(!profileDropDown);
@@ -16,25 +23,13 @@ export const ProfileProvider = ({ children }) => {
     setProfileDropDown(false);
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, "users", auth.currentUser.uid);
-        const result = await getDoc(docRef);
-        if (result.data() !== undefined) {
-          setProfileIcon(result.data().photo);
-        } else {
-          setProfileIcon("");
-        }
-      }
-    });
-  }, []);
-
   return (
     <ProfileContext.Provider
       value={{
+        user,
         profileDropDown,
         profileIcon,
+        getUser,
         setProfileDropDown,
         setProfileIcon,
         toggleProfileDropDown,

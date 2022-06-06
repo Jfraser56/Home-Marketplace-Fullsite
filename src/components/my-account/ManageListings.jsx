@@ -24,10 +24,12 @@ function ManageListings({ user }) {
 
   const handleRemoveListing = async (e) => {
     const listingID = e.target.parentElement.parentElement.parentElement.id;
+
     if (window.confirm("Are you sure?")) {
       try {
         const userRef = doc(db, "users", auth.currentUser.uid);
-        await deleteDoc(doc(db, "listings", listingID));
+        const listingRef = doc(db, "listings", listingID);
+        await deleteDoc(listingRef);
         await updateDoc(userRef, {
           listings: arrayRemove(listingID),
         });
@@ -42,18 +44,19 @@ function ManageListings({ user }) {
     alert("Doesn't work yet");
   };
 
+  const getOwnListings = async () => {
+    const listingsDocs = await Promise.all(
+      user.listings.map((listing) => getDoc(doc(db, "listings", listing)))
+    );
+
+    setListings(listingsDocs.map((doc) => ({ data: doc.data(), id: doc.id })));
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (user) {
-      const getListings = async () => {
-        const listingsDocs = await Promise.all(
-          user.listings.map((listing) => getDoc(doc(db, "listings", listing)))
-        );
-        setListings(
-          listingsDocs.map((doc) => ({ data: doc.data(), id: doc.id }))
-        );
-        setLoading(false);
-      };
-      getListings();
+      console.log("fetched own listings on user change");
+      getOwnListings();
     }
   }, [user]);
 

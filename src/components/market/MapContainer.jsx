@@ -45,7 +45,6 @@ function MapContainer({ type, location, setMapBounds, listings }) {
   //Get geolocation data
   const fetchGeoLocation = async () => {
     try {
-      console.log("fetching");
       const result = await getGeocode({ address: location });
       const latLng = await getLatLng(result[0]);
       setMapPosition(latLng);
@@ -67,13 +66,11 @@ function MapContainer({ type, location, setMapBounds, listings }) {
           lng: JSON.parse(lastSearch).lng,
         });
       }
-      console.log("sabing money");
       setExpandBoundsOnIdle(true);
     } else {
       //If no previous search is available, or previous search does not match current search, then set session storage to current search
       if (!lastSearch || JSON.parse(lastSearch).location !== location) {
         fetchGeoLocation();
-        console.log("set last-search in session storage");
       }
       setExpandBoundsOnIdle(false);
     }
@@ -91,7 +88,6 @@ function MapContainer({ type, location, setMapBounds, listings }) {
   };
 
   const onLoad = (map) => {
-    console.log("loaded");
     mapRef.current = map;
   };
 
@@ -153,11 +149,8 @@ function MapContainer({ type, location, setMapBounds, listings }) {
 
   //Cleanup function
   useEffect(() => {
-    console.log("mounted");
-
     return () => {
       isMounted.current = false;
-      console.log("unmounted");
     };
   }, [isMounted]);
 

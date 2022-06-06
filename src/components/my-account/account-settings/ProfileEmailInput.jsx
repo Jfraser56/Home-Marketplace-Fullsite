@@ -5,10 +5,10 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 
-function ProfileEmailInput({ activeModal, setActiveModal }) {
+function ProfileEmailInput({ profileData, activeModal, setActiveModal }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [emailForm, setEmailForm] = useState({
-    current: "",
+    current: profileData.email,
     new: "",
     confirm: "",
   });
@@ -19,6 +19,7 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
     setActiveModal("email");
     modalRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
   const closeEmailModal = () => {
     setActiveModal(null);
   };
@@ -30,19 +31,6 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
     }));
   };
 
-  useEffect(() => {
-    if (emailForm.new && emailForm.new === emailForm.confirm) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
-  }, [emailForm]);
-
-  useEffect(() => {
-    //Fetch email data on render
-    fetchUpdatedEmail();
-  }, []);
-
   const fetchUpdatedEmail = async () => {
     const result = await getDoc(doc(db, "users", auth.currentUser.uid));
     setEmailForm((prev) => ({
@@ -51,7 +39,7 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
     }));
   };
 
-  const handleUpdateEmail = async (e) => {
+  const handleUpdateEmail = async () => {
     try {
       await updateEmail(auth.currentUser, emailForm.new);
       await updateDoc(doc(db, "users", auth.currentUser.uid), {
@@ -65,6 +53,19 @@ function ProfileEmailInput({ activeModal, setActiveModal }) {
     fetchUpdatedEmail();
     closeEmailModal();
   };
+
+  useEffect(() => {
+    if (emailForm.new && emailForm.new === emailForm.confirm) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [emailForm]);
+
+  // useEffect(() => {
+  //   //Fetch email data on render
+  //   fetchUpdatedEmail();
+  // }, []);
 
   return (
     <div className="relative space-y-2 border-b-[1px] pb-3 mb-5 ml-3 border-gray-300">

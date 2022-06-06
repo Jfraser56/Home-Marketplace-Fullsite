@@ -25,9 +25,9 @@ function ForgotPassword() {
 
   const handlePasswordResetEmail = async (e) => {
     e.preventDefault();
-    console.log("sent!");
     try {
       await sendPasswordResetEmail(auth, emailInput);
+      toast.success("Email sent!");
     } catch (error) {
       toast.error("Invalid Email Address");
     }

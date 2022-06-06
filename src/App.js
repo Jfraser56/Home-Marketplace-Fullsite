@@ -39,7 +39,7 @@ function App() {
     }
   };
 
-  console.log("render");
+  // console.log("render");
 
   return isLoaded ? (
     <div

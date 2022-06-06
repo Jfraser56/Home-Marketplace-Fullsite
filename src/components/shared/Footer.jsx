@@ -5,6 +5,7 @@ import { ReactComponent as FooterImg } from "../../assets/svg/footer.svg";
 function Footer() {
   const location = useLocation();
 
+  //Footer is disabled on map page and listing page
   if (location.pathname.indexOf("/homes/") !== parseInt(-1)) {
     return null;
   } else {

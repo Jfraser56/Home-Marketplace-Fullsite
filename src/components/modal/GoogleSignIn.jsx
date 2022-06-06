@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ReactComponent as GoogleLogo } from "../../assets/svg/google-logo.svg";
 import { auth, db } from "../../firebase.config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";

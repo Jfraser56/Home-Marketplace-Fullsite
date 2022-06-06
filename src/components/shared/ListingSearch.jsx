@@ -1,15 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
-
 import usePlacesAutocomplete from "use-places-autocomplete";
 
 function ListingSearch({ border }) {
   const navigate = useNavigate();
-
-  const handleSearchPlace = (e) => {
-    clearSuggestions();
-    value && navigate(`/homes/sale/${e.target.textContent}`);
-  };
 
   const {
     ready,
@@ -25,7 +19,10 @@ function ListingSearch({ border }) {
     debounce: 300,
   });
 
-  // console.log(status, data);
+  const handleSearchPlace = (e) => {
+    clearSuggestions();
+    value && navigate(`/homes/sale/${e.target.textContent}`);
+  };
 
   return (
     <div

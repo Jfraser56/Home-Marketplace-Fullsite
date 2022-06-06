@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { db, auth } from "../../firebase.config";
+import { auth } from "../../firebase.config";
 import {
   getStorage,
   ref,
@@ -25,6 +24,7 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
           (snapshot) => {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            //Put in a loading bar here ***
             console.log("Progress BAR: " + progress + "% done");
           },
           (error) => {

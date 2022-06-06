@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import ListingCard from "./ListingCard";
 import { ReactComponent as FooterImg } from "../../assets/svg/footer.svg";
 
-function ListingsPanel({ type, location, listings }) {
+function ListingsPanel({ type, listings }) {
   const headers = {
     sale: "Properties for Sale",
     rent: "Rental Listings",

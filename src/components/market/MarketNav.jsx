@@ -28,6 +28,19 @@ function MarketNav({ type, location }) {
     navigate(`/homes/${filter}/${location}`);
   };
 
+  const {
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      types: ["(regions)"],
+      componentRestrictions: { country: "us" },
+    },
+    debounce: 300,
+  });
+
   const handleSearchPlace = (e) => {
     clearSuggestions();
     value && navigate(`/homes/${type}/${e.target.textContent}`);
@@ -79,21 +92,8 @@ function MarketNav({ type, location }) {
     }
   };
 
-  const {
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      types: ["(regions)"],
-      componentRestrictions: { country: "us" },
-    },
-    debounce: 300,
-  });
-
   useEffect(() => {
-    //Make sure type Sale/Rent popup is closed
+    //Make sure type Sale/Rent popup is closed on initial render
     setTypeFilter(false);
     checkIfSaved();
   }, [type, location]);

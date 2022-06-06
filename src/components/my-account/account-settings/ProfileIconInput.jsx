@@ -1,8 +1,5 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import ProfileContext from "../../../context/ProfileContext";
-import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../../../firebase.config";
 import deafultIcon from "../../../assets/png/default-profile-picture.png";
 import profilePicture2 from "../../../assets/png/profile-picture-2.png";
 import profilePicture3 from "../../../assets/png/profile-picture-3.png";
@@ -70,14 +67,14 @@ function ProfileIconInput({ edit, handleFormChange }) {
               onClick={() => setSelector(false)}
             />
             <ul className="flex justify-center space-x-4 mt-2 mb-3">
-              {profileIcons.map((cur, index) => (
+              {profileIcons.map((icon, index) => (
                 <li key={index}>
                   <div
                     onClick={(e) => handleIconSelect(e)}
                     id={index}
                     className="transition w-12 h-12 cursor-pointer bg-gray-500 rounded-full overflow-hidden duration-300 hover:scale-105 hover:-translate-y-1"
                   >
-                    <img src={cur} />
+                    <img src={icon} />
                   </div>
                 </li>
               ))}

@@ -33,13 +33,15 @@ function Listing() {
 
   const { listingID } = useParams();
 
+  const listingRef = doc(db, "listings", listingID);
+
   const handleContactOwner = (e) => {
     e.preventDefault();
+    alert("doesn't work yet");
   };
 
   const handleSaveListing = () => {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    const listingRef = doc(db, "listings", listingID);
 
     if (!listingSaved) {
       try {
@@ -66,25 +68,8 @@ function Listing() {
     }
   };
 
-  const checkIfSaved = async () => {
-    if (auth.currentUser) {
-      const userRef = await getDoc(doc(db, "users", auth.currentUser.uid));
-      const result = await userRef
-        .data()
-        .savedListings.some((listing) => listing === listingID);
-      setListingSaved(result);
-    }
-  };
-
-  //Keeps track of how many views a listing recieves
-  const addView = (listing, docRef) => {
-    updateDoc(docRef, {
-      views: listing.data().views + 1,
-    });
-  };
-  //Keeps track of how many saves a listing recieves
+  // Adds/Subtracts to saves counter when user saves/unsaves listing
   const addOrRemoveSave = async () => {
-    const listingRef = doc(db, "listings", listingID);
     const result = await getDoc(listingRef);
     if (!listingSaved) {
       updateDoc(listingRef, {
@@ -97,12 +82,34 @@ function Listing() {
     }
   };
 
-  useEffect(async () => {
-    const docRef = doc(db, "listings", listingID);
-    const result = await getDoc(docRef);
-    setListingData(result.data());
-    addView(result, docRef);
+  const checkIfSaved = async () => {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+
+    if (auth.currentUser) {
+      const user = await getDoc(userRef);
+      const result = await user
+        .data()
+        .savedListings.some((listing) => listing === listingID);
+      setListingSaved(result);
+    }
+  };
+
+  //Adds to view counter when listing is rendered
+  const addView = (listing) => {
+    updateDoc(listingRef, {
+      views: listing.data().views + 1,
+    });
+  };
+
+  const fetchPageContent = async () => {
+    const listing = await getDoc(listingRef);
+    setListingData(listing.data());
+    addView(listing);
     checkIfSaved();
+  };
+
+  useEffect(() => {
+    fetchPageContent();
   }, []);
 
   return listingData ? (

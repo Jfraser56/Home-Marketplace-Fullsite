@@ -1,10 +1,8 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Spinner from "../shared/Spinner";
 
 function ListingCard({ data, id }) {
-  const navigate = useNavigate();
-
   const {
     type,
     price,
@@ -12,19 +10,10 @@ function ListingCard({ data, id }) {
     town,
     state,
     zip,
-    lat,
-    lng,
-    hash,
     homeType,
     bed,
     bath,
-    basement,
-    parking,
     size,
-    lotSize,
-    buildYear,
-    remodelYear,
-    desc,
     images,
     name,
   } = data;

@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import ProfileContext from "../context/ProfileContext";
 import { useParams } from "react-router-dom";
-import { db, auth } from "../firebase.config";
-import { doc, getDoc } from "firebase/firestore";
 import AccountNav from "../components/my-account/AccountNav";
 import ManageListings from "../components/my-account/ManageListings";
 import ProfileSettings from "../components/my-account/account-settings/ProfileSettings";
 import SavedHomes from "../components/my-account/SavedHomes";
-import Spinner from "../components/shared/Spinner";
 
 function Account() {
-  const [user, setUser] = useState();
+  const { user, getUser } = useContext(ProfileContext);
 
   const { segment } = useParams();
 
@@ -19,11 +17,9 @@ function Account() {
     "profile-settings": "Profile Settings",
   };
 
-  useEffect(async () => {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    const user = await getDoc(userRef);
-    setUser(user.data());
-  }, []);
+  useEffect(() => {
+    getUser();
+  }, [segment]);
 
   return (
     <>
@@ -37,7 +33,7 @@ function Account() {
         ) : segment === "manage-listings" ? (
           <ManageListings user={user} />
         ) : (
-          <ProfileSettings />
+          <ProfileSettings user={user} />
         )}
       </main>
     </>

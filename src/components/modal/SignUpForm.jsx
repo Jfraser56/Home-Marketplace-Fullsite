@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { db } from "../../firebase.config";
 import { auth } from "../../firebase.config";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import ModalContext from "../../context/ModalContext";
 import { BsCheck } from "react-icons/bs";

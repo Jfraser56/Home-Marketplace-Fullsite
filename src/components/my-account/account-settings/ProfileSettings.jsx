@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { db } from "../../../firebase.config";
 import { auth } from "../../../firebase.config";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import Spinner from "../../shared/Spinner";
 import { toast } from "react-toastify";
 import ProfileTextInput from "./ProfileTextInput";
@@ -10,29 +10,27 @@ import ProfileEmailInput from "./ProfileEmailInput";
 import ProfilePasswordInput from "./ProfilePasswordInput";
 import DeleteAccount from "./DeleteAccount";
 
-function ProfileSettings() {
+function ProfileSettings({ user }) {
   const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
-
   const [profileData, setProfileData] = useState({
     name: "",
     screenname: "",
     photo: "",
   });
 
-  const docRef = doc(db, "users", auth.currentUser.uid);
-
   //Submit changes to profile form - push to firebase
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const userRef = doc(db, "users", auth.currentUser.uid);
+
     if (edit) {
       try {
-        updateDoc(docRef, profileData);
+        updateDoc(userRef, profileData);
         toast.success("Changes saved!");
       } catch (error) {
         toast.error("An error occured");
-        console.log(error.code);
       }
     }
     setEdit(!edit);
@@ -47,20 +45,19 @@ function ProfileSettings() {
     }
   };
 
-  useEffect(() => {
-    const populateForm = async () => {
-      //Populate form with profile data on render
-      const docSnap = await getDoc(docRef);
-      setProfileData(docSnap.data());
-      setLoading(false);
-    };
-    populateForm();
-  }, []);
+  const populateForm = async () => {
+    setProfileData(user);
+    setLoading(false);
+  };
 
-  if (loading) {
-    return <Spinner />;
-  }
-  return (
+  useEffect(() => {
+    //Populate form with User's profile data on render
+    if (user) {
+      populateForm();
+    }
+  }, [user]);
+
+  return profileData && !loading ? (
     <form
       onSubmit={handleFormSubmit}
       className="w-full h-auto p-10 bg-white border-[1px] border-gray-300"
@@ -96,6 +93,7 @@ function ProfileSettings() {
       />
       <h1 className="font-medium text-2xl mb-5">Sign in & security</h1>
       <ProfileEmailInput
+        profileData={profileData}
         activeModal={activeModal}
         setActiveModal={setActiveModal}
       />
@@ -107,6 +105,8 @@ function ProfileSettings() {
       <h1 className="font-medium text-2xl mb-5">Manage account</h1>
       <DeleteAccount />
     </form>
+  ) : (
+    <Spinner />
   );
 }
 

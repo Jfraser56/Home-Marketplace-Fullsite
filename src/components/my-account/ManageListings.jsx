@@ -55,7 +55,7 @@ function ManageListings({ user }) {
 
   useEffect(() => {
     if (user) {
-      console.log("fetched own listings on user change");
+      // console.log("fetched own listings on user change");
       getOwnListings();
     }
   }, [user]);
@@ -68,7 +68,7 @@ function ManageListings({ user }) {
         <div className="flex flex-col">
           {listings.map((listing) => (
             <div
-              className="flex p-10 border-b flex-col md:flex-row"
+              className="flex py-3 border-b flex-col md:flex-row"
               key={listing.id}
               id={listing.id}
             >

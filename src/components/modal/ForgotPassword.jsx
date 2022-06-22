@@ -11,11 +11,11 @@ import { toast } from "react-toastify";
 function ForgotPassword() {
   const [emailInput, setEmailInput] = useState("");
 
-  const { toggleModal, setToggleModal, setForgotPassword } =
+  const { toggleSignInModal, setToggleSignInModal, setForgotPassword } =
     useContext(ModalContext);
 
   const handleClick = () => {
-    setToggleModal(!toggleModal);
+    setToggleSignInModal(!toggleSignInModal);
     setForgotPassword(false);
   };
 
@@ -50,7 +50,7 @@ function ForgotPassword() {
     <motion.div
       onClick={(e) => e.stopPropagation()}
       variants={modal}
-      className="relative flex flex-col justify-start text-center w-[30rem] p-10 mx-auto my-[5vh] bg-white shadow-2xl rounded-md overflow-y-auto"
+      className="relative flex flex-col justify-start text-center w-screen sm:w-[30rem] p-10 mx-auto my-24 bg-white shadow-2xl rounded-md overflow-y-auto"
     >
       <button onClick={handleClick} className="absolute top-4 right-4">
         <IoMdClose

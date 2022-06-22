@@ -13,12 +13,13 @@ import {
 import MarketNav from "../components/market/MarketNav";
 import MapContainer from "../components/market/MapContainer";
 import ListingsPanel from "../components/market/ListingsPanel";
-import Listing from "./Listing";
 
 function Market() {
   const [mapBounds, setMapBounds] = useState([]);
   const [listings, setListings] = useState([]);
+
   const { type, location } = useParams();
+  
   const townName = location.split(", ")[0];
 
   const listingsRef = collection(db, "listings");

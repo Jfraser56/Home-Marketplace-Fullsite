@@ -25,7 +25,7 @@ function Account() {
     <>
       <AccountNav />
       <main className="mb-8 container mx-auto">
-        <h1 className="text-4xl font-notoSerif font-bold mb-8">
+        <h1 className="text-4xl font-notoSerif text-center md:text-left md:pl-5 font-bold mb-8">
           {titles[segment]}
         </h1>
         {segment === "saved-homes" ? (

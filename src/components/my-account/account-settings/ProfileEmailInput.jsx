@@ -72,7 +72,7 @@ function ProfileEmailInput({ profileData, activeModal, setActiveModal }) {
       <h3 className="text-sm font-semibold" htmlFor="name">
         Email
       </h3>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between">
         <p className="w-full text-gray-400 font-light">
           The email associated with your account
         </p>
@@ -89,8 +89,7 @@ function ProfileEmailInput({ profileData, activeModal, setActiveModal }) {
       </div>
       {activeModal === "email" && (
         <>
-          <div className="absolute z-10 right-8 top-14 border-t-0 border-[0.75rem] border-x-transparent border-b-slate-50"></div>{" "}
-          <div className="absolute flex flex-col items-center z-10 w-96 -right-5 top-16 rounded-sm shadow-lg bg-slate-50">
+          <div className="absolute flex flex-col items-center z-10 w-96 -right-10 top-16 rounded-sm shadow-lg bg-slate-50">
             <IoMdClose
               className="absolute top-2 right-2 transition duration-300 hover:text-green-500"
               onClick={closeEmailModal}

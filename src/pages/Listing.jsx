@@ -104,8 +104,10 @@ function Listing() {
   const fetchPageContent = async () => {
     const listing = await getDoc(listingRef);
     setListingData(listing.data());
-    addView(listing);
-    checkIfSaved();
+    if (auth.currentUser) {
+      addView(listing);
+      checkIfSaved();
+    }
   };
 
   useEffect(() => {
@@ -163,7 +165,10 @@ function Listing() {
           )}
         </nav>
         <main className="px-8 pt-5 h-auto space-y-5">
-          <h1 className="text-5xl font-semibold mr-5">${listingData.price}</h1>
+          <h1 className="text-5xl font-semibold mr-5">
+            ${listingData.price}
+            {listingData.type === "rent" && "/mo"}
+          </h1>
           <div className="flex items-center">
             {listingData.bed && (
               <div className="flex items-center font-light px-3 py-1 mr-3 border border-gray-300 rounded shadow">
@@ -272,7 +277,10 @@ function Listing() {
                 </li>
                 <li className="flex items-center">
                   <RiRuler2Line size="1.5rem" className="fill-green-600 mr-2" />{" "}
-                  ${+listingData.price / +listingData.size} price/sqft.
+                  $
+                  {+listingData.price.replace(",", "") /
+                    +listingData.size.replace(",", "")}{" "}
+                  price/sqft.
                 </li>
               </>
             )}

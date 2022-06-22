@@ -8,11 +8,11 @@ function Home() {
   return (
     <div className="flex flex-col items-center justify-start">
       <Hero />
-      <h1 className="text-center mt-16 mb-8 font-notoSerif font-semibold text-xl">
+      <h1 className="hidden sm:block text-center mt-16 font-notoSerif font-semibold text-xl">
         Whether you're buying, selling or renting <br /> we can help you move
         forward
       </h1>
-      <div className="flex justify-center w-screen space-x-8 mb-16">
+      <div className="flex flex-col lg:flex-row justify-center items-center w-screen my-16 space-y-8 lg:space-x-8 lg:space-y-0">
         <Card
           type={"Buy"}
           icon={<BuyHome />}

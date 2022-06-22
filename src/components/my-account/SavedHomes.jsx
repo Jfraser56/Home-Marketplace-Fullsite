@@ -35,7 +35,7 @@ function SavedHomes({ user }) {
 
   useEffect(() => {
     if (user) {
-      console.log("fetched saved listings on user change");
+      // console.log("fetched saved listings on user change");
       getSavedListings();
     }
   }, [user]);

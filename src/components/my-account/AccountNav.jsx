@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 function AccountNav() {
   return (
     <nav className="mb-8 border-t-[1px] border-gray-300 bg-white">
-      <ul className="flex space-x-8 container mx-auto">
+      <ul className="flex space-x-8 container mx-auto whitespace-nowrap overflow-x-scroll">
         <NavLink
           to="/my-account/saved-homes"
           className={({ isActive }) =>

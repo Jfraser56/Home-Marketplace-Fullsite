@@ -10,7 +10,7 @@ function ListingsPanel({ type, listings }) {
   };
 
   return (
-    <div className="absolute h-full w-screen shadow-lg sm:w-screen lg:w-[25rem]  xl:w-[47rem] top-14 right-0 bg-white  overflow-scroll p-5">
+    <div className="absolute h-full w-full shadow-lg lg:w-[25rem] xl:w-[47rem] top-24 md:top-14 right-0 bg-white  overflow-scroll p-5">
       <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2  ">
         <h1 className="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-2 font-semibold text-xl tracking-wide ">
           {headers[type]}

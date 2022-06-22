@@ -12,16 +12,16 @@ function ProfileDropDown({ active }) {
 
   return (
     <div
-      className={`drop-down transition duration-300 absolute  rounded-l border top-20 w-80 z-20 bg-white -right-80 ${
-        active && "-translate-x-80"
+      className={`drop-down absolute rounded-l border bg-white top-40 lg:top-16 w-screen lg:w-80 lg:right-2  z-20 ${
+        !active && "hidden"
       }`}
     >
-      <ul className="drop-down">
+      <ul className="drop-down text-center">
         <li
           onClick={() => {
             navigate("/my-account/saved-homes");
           }}
-          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 border-b cursor-pointer font-notoSans font-light"
         >
           Saved homes
         </li>
@@ -29,7 +29,7 @@ function ProfileDropDown({ active }) {
           onClick={() => {
             navigate("/my-account/manage-listings");
           }}
-          className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
+          className="transition px-3 py-4 hover:bg-green-500/20 border-b cursor-pointer font-notoSans font-light"
         >
           Manage your listings
         </li>

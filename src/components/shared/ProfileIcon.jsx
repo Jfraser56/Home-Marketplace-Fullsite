@@ -32,6 +32,7 @@ function ProfileIcon() {
           alt="profile-icon"
         />
       </div>
+
       <ProfileDropDown active={profileDropDown} />
     </>
   );

@@ -26,7 +26,7 @@ function ListingSearch({ border }) {
 
   return (
     <div
-      className={`relative w-[40rem] mx-auto rounded-sm shadow-md ${
+      className={`relative w-5/6 md:w-1/2 mx-auto rounded-sm shadow-md ${
         border && "border-[1px] border-gray-500 "
       }`}
     >

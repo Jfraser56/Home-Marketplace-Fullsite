@@ -27,8 +27,8 @@ function DeleteAccount() {
   };
 
   return (
-    <div className="flex justify-between border-b-[1px] items-center pb-3 mb-5 ml-3 border-gray-300">
-      <div className="space-y-2 ">
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b-[1px]  pb-3 mb-5 ml-3 border-gray-300">
+      <div className="space-y-2 pb-2">
         <h3 className="text-sm font-semibold">Deactivate account</h3>
         <p className="w-full text-gray-400 font-light">
           This will erase your account, and remove all of your listings

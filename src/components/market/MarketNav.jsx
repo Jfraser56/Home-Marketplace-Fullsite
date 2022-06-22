@@ -99,8 +99,8 @@ function MarketNav({ type, location }) {
   }, [type, location]);
 
   return (
-    <div className="relative flex items-center h-14 w-full p-3 bg-white border-t-[1px] border-gray-300 z-10">
-      <div className="relative w-72 h-8 mr-5 border-gray-400 border-[1px] rounded-sm">
+    <div className="relative flex flex-col md:flex-row items-start w-full p-3 bg-white border-t-[1px] border-gray-300 z-10">
+      <div className="relative w-full h-8 mr-5 mb-3 border-gray-400 border-[1px] rounded-sm">
         <input
           onChange={(e) => setValue(e.target.value)}
           className="px-3 py-2 w-full h-full outline-none text-xs font-semibold"
@@ -129,11 +129,11 @@ function MarketNav({ type, location }) {
           </div>
         )}
       </div>
-      <div className="relative flex justify-start items-center space-x-5">
+      <div className="relative flex justify-start items-center space-x-2 md:space-x-5">
         <button
           onClick={() => setTypeFilter(!typeFilter)}
           type="button"
-          className={`flex items-center transition h-8 px-6 text-xs font-semibold  border-[1px] rounded-sm  ${
+          className={`flex items-center transition h-8 px-6 text-xs font-semibold border-[1px] rounded-sm whitespace-nowrap  ${
             typeFilter
               ? "bg-green-600 text-white"
               : "text-green-600 border-green-600 hover:text-black hover:border-black hover:bg-green-500/10"
@@ -228,7 +228,7 @@ function MarketNav({ type, location }) {
           <button
             type="button"
             onClick={handleSaveSearch}
-            className="flex items-center transition h-8 px-6 text-xs font-semibold text-green-600 border-green-600 border-[1px] rounded-sm hover:text-black hover:border-black hover:bg-green-500/10"
+            className="flex items-center transition h-8 px-6 text-xs font-semibold text-green-600 border-green-600 border-[1px] rounded-sm hover:text-black hover:border-black hover:bg-green-500/10 whitespace-nowrap"
           >
             {searchSaved ? (
               <>

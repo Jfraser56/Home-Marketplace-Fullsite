@@ -30,7 +30,10 @@ function ListingCard({ data, id }) {
       />
 
       <div className="p-3 space-y-1">
-        <h3 className="font-semibold text-xl tracking-wide">${price}</h3>
+        <h3 className="font-semibold text-xl tracking-wide">
+          ${price}
+          {type === "rent" && "/mo"}
+        </h3>
         <ul className="flex flex-wrap text-sm">
           <li className="mr-2">{bed} bed</li>
           <li className="mr-2">{bath} bath</li>

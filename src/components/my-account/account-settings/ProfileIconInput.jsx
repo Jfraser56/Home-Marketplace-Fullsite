@@ -31,7 +31,7 @@ function ProfileIconInput({ edit, handleFormChange }) {
   };
 
   return (
-    <div className="relative flex justify-between border-b-[1px] pb-3 mb-5 ml-3 border-gray-300">
+    <div className="relative flex justify-between items-start space-y-3 md:space-y-0 flex-col md:flex-row border-b-[1px] pb-3 mb-5 ml-3 border-gray-300">
       <div className="space-y-2">
         <h3 className="text-sm font-semibold" htmlFor="name">
           Profile Icon
@@ -59,28 +59,25 @@ function ProfileIconInput({ edit, handleFormChange }) {
       </div>
 
       {edit && selector && (
-        <>
-          <div className="absolute right-8 top-12 border-t-0 border-[0.75rem] border-x-transparent border-b-slate-50"></div>{" "}
-          <div className="grid absolute w-96 p-3 -right-5 top-14 rounded-sm shadow-lg bg-slate-50">
-            <IoMdClose
-              className="justify-self-end transition duration-300 hover:text-green-500"
-              onClick={() => setSelector(false)}
-            />
-            <ul className="flex justify-center space-x-4 mt-2 mb-3">
-              {profileIcons.map((icon, index) => (
-                <li key={index}>
-                  <div
-                    onClick={(e) => handleIconSelect(e)}
-                    id={index}
-                    className="transition w-12 h-12 cursor-pointer bg-gray-500 rounded-full overflow-hidden duration-300 hover:scale-105 hover:-translate-y-1"
-                  >
-                    <img src={icon} />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </>
+        <div className="grid absolute w-96 p-3 -right-10 top-5 md:top-16 rounded-sm shadow-lg bg-slate-50">
+          <IoMdClose
+            className="justify-self-end transition duration-300 hover:text-green-500"
+            onClick={() => setSelector(false)}
+          />
+          <ul className="flex justify-center space-x-4 mt-2 mb-3">
+            {profileIcons.map((icon, index) => (
+              <li key={index}>
+                <div
+                  onClick={(e) => handleIconSelect(e)}
+                  id={index}
+                  className="transition w-12 h-12 cursor-pointer bg-gray-500 rounded-full overflow-hidden duration-300 hover:scale-105 hover:-translate-y-1"
+                >
+                  <img src={icon} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

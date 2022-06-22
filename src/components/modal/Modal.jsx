@@ -47,7 +47,7 @@ function Modal() {
           setToggleSignInModal(!toggleSignInModal);
           setForgotPassword(false);
         }}
-        className="z-20 absolute w-screen h-screen bg-black/80"
+        className="z-20 fixed top-0 left-0 w-screen h-screen bg-black/80"
         variants={backDrop}
         initial="hidden"
         animate="visible"
@@ -59,7 +59,7 @@ function Modal() {
           <motion.div
             onClick={(e) => e.stopPropagation()}
             variants={modal}
-            className="relative flex flex-col justify-start text-center h-5/6 w-[30rem] p-10 mx-auto my-[5vh] bg-white shadow-2xl rounded-md overflow-y-auto"
+            className="absolute flex flex-col justify-start text-center top-0 left-0 bottom-0 right-0 w-screen h-screen sm:h-5/6 sm:w-[30rem] p-10 mx-auto sm:my-20 bg-white shadow-2xl rounded-md overflow-y-auto"
           >
             <button
               onClick={() => setToggleSignInModal(!toggleSignInModal)}
@@ -70,8 +70,8 @@ function Modal() {
                 className="transition hover:fill-green-500 hover:scale-110"
               />
             </button>
-            <h2 className="font-notoSerif font-semibold text-2xl mb-7">
-              Welcome to Zillow
+            <h2 className="font-notoSerif font-semibold text-xl mb-7">
+              Welcome to SellYour<span className="text-green-600">Place</span>
             </h2>
             <ul className="flex space-x-5 border-b-2">
               <li>

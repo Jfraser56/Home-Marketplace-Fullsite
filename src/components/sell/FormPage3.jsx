@@ -91,7 +91,7 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
               type="text"
             />
             <div className="absolute left-0 top-0 flex justify-center items-center w-16 h-full text-lg bg-gray-200">
-              $
+              {formData.type === "sale" ? "$" : "$/mo"}
             </div>
           </div>
         </div>

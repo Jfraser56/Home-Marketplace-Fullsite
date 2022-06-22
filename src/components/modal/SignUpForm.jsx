@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase.config";
 import { auth } from "../../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -23,6 +24,8 @@ function SignUpForm() {
     savedListings: [],
     savedSearches: [],
   });
+
+  const navigate = useNavigate();
 
   const re = /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/; //Password Validation
 
@@ -51,6 +54,7 @@ function SignUpForm() {
         ...profileData,
         timestamp: serverTimestamp(),
       });
+      navigate("/");
     } catch (error) {
       // Clear input fields
       toast.error("Invalid email or password");

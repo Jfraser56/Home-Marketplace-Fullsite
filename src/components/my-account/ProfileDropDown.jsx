@@ -1,25 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import ModalContext from "../../context/ModalContext";
 import { auth } from "../../firebase.config";
 import { signOut } from "firebase/auth";
 
 function ProfileDropDown({ active }) {
-  const navigate = useNavigate();
+  const { navigateTo } = useContext(ModalContext);
 
   const logOut = async () => {
     await signOut(auth);
-    navigate("/");
+    navigateTo("/");
   };
 
   return (
     <div
-      className={`drop-down absolute rounded-l border bg-white top-40 lg:top-16 w-screen lg:w-80 lg:right-2  z-20 ${
+      className={`drop-down absolute rounded-l border bg-white top-40 lg:top-16 w-screen lg:w-80 lg:right-2 z-30 ${
         !active && "hidden"
       }`}
     >
       <ul className="drop-down text-center">
         <li
           onClick={() => {
-            navigate("/my-account/saved-homes");
+            navigateTo("/my-account/saved-homes");
           }}
           className="transition px-3 py-4 hover:bg-green-500/20 border-b cursor-pointer font-notoSans font-light"
         >
@@ -27,7 +28,7 @@ function ProfileDropDown({ active }) {
         </li>
         <li
           onClick={() => {
-            navigate("/my-account/manage-listings");
+            navigateTo("/my-account/manage-listings");
           }}
           className="transition px-3 py-4 hover:bg-green-500/20 border-b cursor-pointer font-notoSans font-light"
         >
@@ -35,7 +36,7 @@ function ProfileDropDown({ active }) {
         </li>
         <li
           onClick={() => {
-            navigate("/my-account/profile-settings");
+            navigateTo("/my-account/profile-settings");
           }}
           className="transition px-3 py-4 hover:bg-green-500/20 cursor-pointer font-notoSans font-light"
         >

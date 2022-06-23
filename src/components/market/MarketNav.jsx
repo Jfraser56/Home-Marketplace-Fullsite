@@ -114,7 +114,7 @@ function MarketNav({ type, location }) {
           <BiSearch size="1.2rem" fill="#16a34a" />
         </div>
         {status === "OK" && (
-          <div className="absolute left-0 right-0 bg-white shadow-lg rounded-sm border-[1px]">
+          <div className="absolute left-0 right-0 bg-white shadow-lg rounded-sm border-[1px] z-10">
             {data.map(({ place_id, description }) => (
               <button
                 onClick={(e) => handleSearchPlace(e)}

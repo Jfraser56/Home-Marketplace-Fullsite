@@ -29,6 +29,7 @@ export const ProfileProvider = ({ children }) => {
         user,
         profileDropDown,
         profileIcon,
+        setUser,
         getUser,
         setProfileDropDown,
         setProfileIcon,

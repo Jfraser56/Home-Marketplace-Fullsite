@@ -19,7 +19,7 @@ function Market() {
   const [listings, setListings] = useState([]);
 
   const { type, location } = useParams();
-  
+
   const townName = location.split(", ")[0];
 
   const listingsRef = collection(db, "listings");

@@ -139,7 +139,7 @@ function SellForm() {
   };
 
   return (
-    <div className="mx-auto w-[60rem]">
+    <div className="mx-auto w-10/12">
       <h3
         ref={topOfFormRef}
         className="text-center py-16 font-notoSerif text-xl font-bold"
@@ -158,7 +158,7 @@ function SellForm() {
         </div>
         <div
           style={{ background: step > 1 ? "#66b266" : "#d1d5db" }}
-          className="w-60 h-2"
+          className="w-32 sm:w-60 h-2"
         ></div>
         <div
           style={{ background: step > 1 ? "#66b266" : "#d1d5db" }}
@@ -168,7 +168,7 @@ function SellForm() {
         </div>
         <div
           style={{ background: step > 2 ? "#66b266" : "#d1d5db" }}
-          className="w-60 h-2"
+          className="w-32 sm:w-60 h-2"
         ></div>
         <div
           style={{ background: step > 2 ? "#66b266" : "#d1d5db" }}

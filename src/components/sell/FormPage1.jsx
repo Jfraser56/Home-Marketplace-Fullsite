@@ -3,14 +3,14 @@ import { BsBuilding, BsHouseDoor } from "react-icons/bs";
 
 function FormPage2({ handleFormChange, setFormData, formData }) {
   return (
-    <div className=" mx-auto p-20 pt-12 bg-white border border-gray-300 shadow">
-      <h1 className="text-center text-3xl text-gray-600">
+    <div className=" mx-auto p-5 sm:p-10 pt-12 bg-white border border-gray-300 shadow">
+      <h1 className="text-center text-xl sm:text-3xl text-gray-600">
         Add your <span className="text-green-600">property</span>
       </h1>
-      <p className="text-center text-lg font-light mt-4">
+      <p className="text-center sm:text-lg font-light mt-4">
         Reach millions of buyers. <br /> Sign leases. Set up rent payments.
       </p>
-      <div className="mt-10 flex justify-center space-x-16">
+      <div className="mt-10 flex justify-center space-x-5 sm:space-x-16">
         <button
           onClick={() => setFormData({ ...formData, type: "sale" })}
           type="button"
@@ -32,7 +32,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
           For rent
         </button>
       </div>
-      <div className="mt-12 p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
+      <div className="mt-12 p-5 sm:p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
         <div className="space-y-3">
           <label className="text-sm font-semibold" htmlFor="address">
             Street address <span className="text-red-500">*</span>
@@ -46,7 +46,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
           />
         </div>
       </div>
-      <div className="mt-12 p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
+      <div className="mt-12 p-5 sm:p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
         <div className="space-y-3">
           <label className="text-sm font-semibold" htmlFor="town">
             Town <span className="text-red-500">*</span>
@@ -60,7 +60,7 @@ function FormPage2({ handleFormChange, setFormData, formData }) {
           />
         </div>
       </div>
-      <div className="flex justify-start space-x-8 mt-12 p-10 pt-4 border bg-white border-gray-300 rounded shadow">
+      <div className="flex justify-start space-x-8 mt-12 p-5 sm:p-10 pt-4 border bg-white border-gray-300 rounded shadow">
         <div className="space-y-3">
           <label className="text-sm font-semibold" htmlFor="state">
             State <span className="text-red-500">*</span>

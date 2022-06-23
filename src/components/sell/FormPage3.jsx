@@ -70,14 +70,14 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
   };
 
   return (
-    <div className=" mx-auto p-20 py-12 bg-white border border-gray-300 shadow">
-      <h1 className="text-center text-3xl text-gray-600">
+    <div className=" mx-auto p-5 sm:p-10 py-12 bg-white border border-gray-300 shadow">
+      <h1 className="text-center text-lg sm:text-3xl text-gray-600">
         Show your <span className="text-green-600/80">Listing</span>
       </h1>
-      <p className="text-center text-lg font-light mt-4">
+      <p className="text-center sm:text-lg font-light mt-4">
         Choose a price for your home. <br /> Add photos to your listing
       </p>
-      <div className="mt-12 p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
+      <div className="mt-12 p-5 sm:p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
         <div className="space-y-3">
           <label className="text-sm font-semibold" htmlFor="price">
             Set your price <span className="text-red-500">*</span>
@@ -96,7 +96,7 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
           </div>
         </div>
       </div>
-      <div className="mt-12 p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
+      <div className="mt-12 p-5 sm:p-10 pt-4 space-y-8 border bg-white border-gray-300 rounded overflow-hidden shadow">
         <div className="space-y-3">
           <p className="text-sm font-semibold cursor-default">
             Upload up to 5 Photos{" "}
@@ -107,7 +107,10 @@ function FormPage3({ formData, setFormData, handleFormChange }) {
           </p>
           {formData.images &&
             formData.images.map((file, index) => (
-              <div key={index} className="relative inline-block w-24 h-16 mr-7">
+              <div
+                key={index}
+                className="relative inline-block w-12 h-8 sm:w-24 sm:h-16 mr-7"
+              >
                 <img
                   className="w-full h-full rounded overflow object-cover object-center"
                   src={file}

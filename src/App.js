@@ -44,7 +44,7 @@ function App() {
   return isLoaded ? (
     <div
       onClick={closeOpenModals}
-      className={`relative h-screen w-full flex flex-col justify-between overflow-x-hidden bg-slate-100 ${
+      className={`relative h-screen w-screen flex flex-col justify-between overflow-x-hidden bg-slate-100 ${
         toggleSignInModal && "overflow-y-hidden" //Disabled scrolling when modal is open
       }`}
     >

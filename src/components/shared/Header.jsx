@@ -1,16 +1,18 @@
 import { useState, useContext } from "react";
 import ModalContext from "../../context/ModalContext";
-import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase.config";
 import { onAuthStateChanged } from "firebase/auth";
 import ProfileIcon from "./ProfileIcon";
 
 function Header() {
   const [user, setUser] = useState({});
-  const [mobileNav, setMobileNav] = useState(false);
-  const { toggleSignInModal, setToggleSignInModal } = useContext(ModalContext);
-
-  const navigate = useNavigate();
+  const {
+    toggleSignInModal,
+    setToggleSignInModal,
+    mobileNav,
+    setMobileNav,
+    navigateTo,
+  } = useContext(ModalContext);
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -18,11 +20,6 @@ function Header() {
 
   const showMobileNav = () => {
     setMobileNav(!mobileNav);
-  };
-
-  const navigateTo = (url) => {
-    setMobileNav(false);
-    navigate(url);
   };
 
   return (
@@ -66,7 +63,7 @@ function Header() {
         </ul>
         <h1
           onClick={() => navigateTo("/")}
-          className="text-3xl font-bold ml-5 lg:ml-0"
+          className="text-3xl font-bold ml-5 lg:ml-0 cursor-pointer"
         >
           SellYour<span className="text-green-600">Place</span>
         </h1>
@@ -94,7 +91,7 @@ function Header() {
         <ul
           className={`${
             !mobileNav && "hidden lg:flex"
-          } flex flex-col lg:flex-row items-center absolute lg:static top-80  lg:top-0 left-0 right-0 bg-white lg:space-y-0 lg:space-x-5 z-10 `}
+          } flex flex-col lg:flex-row items-center absolute lg:static top-80  lg:top-0 left-0 right-0 bg-white lg:space-y-0 lg:space-x-5 z-20 `}
         >
           <li
             onClick={() => navigateTo("/my-account/manage-listings")}
@@ -114,7 +111,7 @@ function Header() {
             ) : (
               <button
                 onClick={() => setToggleSignInModal(!toggleSignInModal)}
-                className="transition hover:text-green-600 whitespace-nowrap"
+                className="transition w-full hover:text-green-600 whitespace-nowrap"
               >
                 Sign In
               </button>

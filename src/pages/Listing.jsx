@@ -115,24 +115,28 @@ function Listing() {
   }, []);
 
   return listingData ? (
-    <div className="flex border-t border-gray-300 overflow-hidden">
-      <div className="grid grid-cols-2 gap-1 overflow-y-scroll p-1 w-full">
+    <div className="flex flex-col md:flex-row border-t border-gray-300 overflow-hidden">
+      <div className="overflow-y-scroll w-full md:w-1/2 lg:w-full">
         <img
-          className="col-span-2 mx-auto w-auto h-full object-cover object-center rounded"
+          className="object-cover object-center rounded"
           src={listingData.images[0]}
           alt="header-image"
         />
-        {listingData.images.slice(1).map((image, index) => (
-          <img
-            key={index}
-            className="h-full w-auto object-cover object-center rounded"
-            src={image}
-            alt="secondary-image"
-          />
-        ))}
+        <div className="flex flex-wrap justify-start">
+          {listingData.images.slice(1).map((image, index) => (
+            <div className="lg:w-1/2 p-1">
+              <img
+                key={index}
+                className="w-full h-full object-cover object-center rounded"
+                src={image}
+                alt="secondary-image"
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="w-[110rem] h-auto bg-white overflow-y-scroll">
-        <nav className="sticky top-0 flex items-center justify-between w-auto h-20 p-5 bg-white border-b border-gray-300 shadow z-10">
+      <div className="w-full h-auto bg-white overflow-y-scroll">
+        <nav className="sticky top-0 flex items-center justify-between w-auto h-1/6 md:h-20 p-5 bg-white border-b border-gray-300 shadow z-10">
           <Link
             to={`/homes/${listingData.type}/recent`}
             className="transition group flex items-center text-gray-600 hover:text-green-600 "
@@ -164,40 +168,40 @@ function Listing() {
             </button>
           )}
         </nav>
-        <main className="px-8 pt-5 h-auto space-y-5">
+        <main className="px-2 md:px-8 pt-5 h-auto space-y-3">
           <h1 className="text-5xl font-semibold mr-5">
             ${listingData.price}
             {listingData.type === "rent" && "/mo"}
           </h1>
-          <div className="flex items-center">
+          <div className="flex items-center flex-wrap">
             {listingData.bed && (
-              <div className="flex items-center font-light px-3 py-1 mr-3 border border-gray-300 rounded shadow">
+              <div className="flex items-center font-light px-3 py-1 m-2 border border-gray-300 rounded shadow">
                 <BiBed className="mr-2 inline" />{" "}
                 <b className="mr-1">{listingData.bed}</b> bd
               </div>
             )}
             {listingData.bath && (
-              <div className="flex items-center font-light px-3 py-1 mr-3 border border-gray-300 rounded shadow">
+              <div className="flex items-center font-light px-3 py-1 m-2 border border-gray-300 rounded shadow">
                 <BiBath className="mr-2 inline" />{" "}
                 <b className="mr-1">{listingData.bath}</b>ba
               </div>
             )}
             {listingData.size && (
-              <div className="flex items-center font-light px-3 py-1 mr-3 border border-gray-300 rounded shadow">
+              <div className="flex items-center font-light px-3 py-1 m-2 border border-gray-300 rounded shadow">
                 <BsColumns className="mr-2 inline" />{" "}
                 <b className="mr-1">{listingData.size}</b>
                 sqft
               </div>
             )}
             {listingData.lotSize && (
-              <div className="flex items-center font-light px-3 py-1 border border-gray-300 rounded shadow">
+              <div className="flex items-center font-light px-3 py-1 m-2 border border-gray-300 rounded shadow">
                 <BsTree className="mr-2 inline" />{" "}
                 <b className="mr-1">{listingData.lotSize}</b> acres
               </div>
             )}
           </div>
           <div className="flex items-center">
-            <div className="flex items-center px-3 py-1 mr-3 border border-gray-300 rounded shadow">
+            <div className="flex items-center px-3 py-1 m-2 border border-gray-300 rounded shadow">
               <BsFillCircleFill
                 className="inline mr-2"
                 size=".75rem"
@@ -211,7 +215,7 @@ function Listing() {
               />{" "}
               For {listingData.type}
             </div>
-            <div className="flex items-center px-3 py-1 border border-gray-300 rounded shadow">
+            <div className="flex items-center px-3 py-1 m-2 border border-gray-300 rounded shadow">
               <BsHouseDoor className="inline mr-2" size="1.1rem" />{" "}
               {listingData.homeType}
             </div>
@@ -222,18 +226,20 @@ function Listing() {
           </p>
           <IndividualListingMap lat={listingData.lat} lng={listingData.lng} />
           <div className="w-full h-1 border-b my-7 border-gray-300 "></div>
-          <div className="flex items-center">
-            <h1 className="text-2xl font-semibold mr-4">Overview</h1>
-            <span className="font-light px-4 border-x border-gray-300">
+          <div className="flex items-center justify-center lg:justify-start flex-wrap sm:flex-nowrap">
+            <h1 className="text-2xl font-semibold text-center w-full sm:w-auto mb-4 sm:mb-0 sm:mr-4">
+              Overview
+            </h1>
+            <span className="font-light px-4 w-full sm:w-auto sm:border-x border-gray-300">
               Listed by: <span className="font-bold">{listingData.name}</span>
             </span>
-            <span className="font-light px-4 border-r border-gray-300">
+            <span className="font-light px-4 w-full sm:w-auto sm:border-r border-gray-300">
               Posted on:{" "}
               <span className="font-bold">
                 {listingData.timestamp.toDate().toString().slice(4, 15)}
               </span>
             </span>
-            <span className="font-light px-4 border-r border-gray-300">
+            <span className="font-light px-4 w-full sm:w-auto sm:border-r border-gray-300">
               Saves: <span className="font-bold">{listingData.saves}</span>
             </span>
           </div>
@@ -256,7 +262,7 @@ function Listing() {
           </div>
           <div className="w-full h-1 border-b my-7 border-gray-300 "></div>
           <h1 className="text-2xl font-semibold mr-5">Facts and Features</h1>
-          <ul className="w-1/2 p-8 border shadow rounded space-y-5">
+          <ul className="w-full sm:w-1/2 p-8 border shadow rounded space-y-5">
             {listingData.bed && (
               <li className="flex items-center">
                 <BiBed size="1.5rem" className="fill-green-600 mr-2" />{" "}
@@ -332,7 +338,7 @@ function Listing() {
           <h1 className="text-2xl font-semibold mr-5">Contact Owner</h1>
           <form
             onSubmit={(e) => handleContactOwner(e)}
-            className="p-10 pt-4 space-y-5 border bg-white rounded overflow-hidden shadow"
+            className="p-3 sm:p-10 pt-4 space-y-5 border bg-white rounded overflow-hidden shadow"
           >
             <div className="space-y-3">
               <label className="text-sm font-semibold" htmlFor="contact-name">

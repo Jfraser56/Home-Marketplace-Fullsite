@@ -7,7 +7,7 @@ import ProfileSettings from "../components/my-account/account-settings/ProfileSe
 import SavedHomes from "../components/my-account/SavedHomes";
 
 function Account() {
-  const { user, getUser } = useContext(ProfileContext);
+  const { user } = useContext(ProfileContext);
 
   const { segment } = useParams();
 
@@ -16,10 +16,6 @@ function Account() {
     "manage-listings": "Your Listings",
     "profile-settings": "Profile Settings",
   };
-
-  useEffect(() => {
-    getUser();
-  }, [segment]);
 
   return (
     <>

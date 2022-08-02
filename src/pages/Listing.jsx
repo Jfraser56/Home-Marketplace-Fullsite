@@ -124,7 +124,7 @@ function Listing() {
         />
         <div className="flex flex-wrap justify-start">
           {listingData.images.slice(1).map((image, index) => (
-            <div className="lg:w-1/2 p-1">
+            <div key={index} className="lg:w-1/2 p-1">
               <img
                 key={index}
                 className="w-full h-full object-cover object-center rounded"
@@ -284,8 +284,10 @@ function Listing() {
                 <li className="flex items-center">
                   <RiRuler2Line size="1.5rem" className="fill-green-600 mr-2" />{" "}
                   $
-                  {+listingData.price.replace(",", "") /
-                    +listingData.size.replace(",", "")}{" "}
+                  {Math.round(
+                    +listingData.price.replace(",", "") /
+                      +listingData.size.replace(",", "")
+                  )}{" "}
                   price/sqft.
                 </li>
               </>

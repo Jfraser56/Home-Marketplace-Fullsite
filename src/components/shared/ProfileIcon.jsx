@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import ProfileContext from "../../context/ProfileContext";
 import ProfileDropDown from "../my-account/ProfileDropDown";
 import defaultIcon from "../../assets/png/default-profile-picture.png";
 import profilePicture2 from "../../assets/png/profile-picture-2.png";
@@ -8,10 +6,7 @@ import profilePicture1 from "../../assets/png/profile-picture-1.png";
 import profilePicture4 from "../../assets/png/profile-picture-4.png";
 import profilePicture5 from "../../assets/png/profile-picture-5.png";
 
-function ProfileIcon() {
-  const { toggleProfileDropDown, profileDropDown, profileIcon } =
-    useContext(ProfileContext);
-
+function ProfileIcon({ toggleProfileDropDown, profileDropDown, profileIcon }) {
   const profileIcons = [
     profilePicture1,
     profilePicture2,

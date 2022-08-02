@@ -12,24 +12,28 @@ function SavedHomes({ user }) {
   const [loading, setLoading] = useState(true);
 
   const getSavedListings = async () => {
-    const listingsDocs = await Promise.all(
-      user.savedListings.map((listing) => getDoc(doc(db, "listings", listing)))
-    );
+    if (user.savedListings) {
+      const listingsDocs = await Promise.all(
+        user.savedListings.map((listing) =>
+          getDoc(doc(db, "listings", listing))
+        )
+      );
 
-    //In case a listing was deleted, this will filter out data that is no longer available
-    const results = listingsDocs.filter((doc) => {
-      if (doc.exists()) {
-        return doc;
+      //In case a listing was deleted, this will filter out data that is no longer available
+      const results = listingsDocs.filter((doc) => {
+        if (doc.exists()) {
+          return doc;
+        }
+      });
+
+      //If there is missing data, this function updates the users savedListing array in firebase
+      if (results.length !== listingsDocs.length) {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        await updateDoc(userRef, { savedListings: results });
       }
-    });
-
-    //If there is missing data, this function updates the users savedListing array in firebase
-    if (results.length !== listingsDocs.length) {
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      await updateDoc(userRef, { savedListings: results });
+      setListings(results.map((doc) => ({ data: doc.data(), id: doc.id })));
     }
 
-    setListings(results.map((doc) => ({ data: doc.data(), id: doc.id })));
     setLoading(false);
   };
 

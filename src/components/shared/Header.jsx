@@ -1,11 +1,13 @@
 import { useState, useContext } from "react";
 import ModalContext from "../../context/ModalContext";
+import ProfileContext from "../../context/ProfileContext";
 import { auth } from "../../firebase.config";
 import { onAuthStateChanged } from "firebase/auth";
 import ProfileIcon from "./ProfileIcon";
 
 function Header() {
-  const [user, setUser] = useState({});
+  const { user, toggleProfileDropDown, profileDropDown, profileIcon } =
+    useContext(ProfileContext);
   const {
     toggleSignInModal,
     setToggleSignInModal,
@@ -14,11 +16,9 @@ function Header() {
     navigateTo,
   } = useContext(ModalContext);
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  console.log("render nav");
 
-  const showMobileNav = () => {
+  const toggleMobileNav = () => {
     setMobileNav(!mobileNav);
   };
 
@@ -28,7 +28,7 @@ function Header() {
         <ul
           className={`${
             !mobileNav && "hidden lg:flex"
-          } flex flex-col lg:flex-row items-center absolute lg:static top-20 lg:top-0 left-0 right-0 bg-white lg:space-y-0 lg:space-x-5 z-20 `}
+          } flex flex-col lg:flex-row items-center absolute lg:static top-20 lg:top-0 left-0 right-0 bg-white lg:space-y-0 lg:space-x-5 z-20`}
         >
           <li
             onClick={() => navigateTo("/homes/sale/recent")}
@@ -68,7 +68,7 @@ function Header() {
           SellYour<span className="text-green-600">Place</span>
         </h1>
         <div
-          onClick={showMobileNav}
+          onClick={toggleMobileNav}
           className="lg:hidden mr-5 w-5 cursor-pointer"
         >
           <div
@@ -107,7 +107,11 @@ function Header() {
           </li>
           <li className="flex justify-center border-b lg:border-none w-full p-3">
             {user ? (
-              <ProfileIcon user={user} />
+              <ProfileIcon
+                toggleProfileDropDown={toggleProfileDropDown}
+                profileDropDown={profileDropDown}
+                profileIcon={profileIcon}
+              />
             ) : (
               <button
                 onClick={() => setToggleSignInModal(!toggleSignInModal)}

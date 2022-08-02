@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 function Explore() {
   const { type, location } = useParams();
 
-  return location ? <div>{location}</div> : <div>{type}</div>;
+  return <div>Explore</div>;
 }
 
 export default Explore;

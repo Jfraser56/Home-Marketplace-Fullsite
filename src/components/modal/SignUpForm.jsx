@@ -197,8 +197,8 @@ function SignUpForm() {
           type="checkbox"
           className="h-5 w-5 outline-none cursor-pointer "
         />
-        <label htmlFor="checkbox" className="cursor-pointer">
-          I agree to terms and conditions
+        <label htmlFor="checkbox" className="cursor-pointer text-sm">
+          I agree to the <strong>fake</strong> terms and conditions checkbox
         </label>
       </div>
 

@@ -23,7 +23,7 @@ function ProfileTextInput({
           }`}
           id={id}
           placeholder={title}
-          value={profileData[id]}
+          value={profileData[id] ? profileData[id] : ""}
           maxLength={20}
           disabled={!edit}
         />

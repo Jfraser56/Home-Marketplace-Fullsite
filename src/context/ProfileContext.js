@@ -1,7 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase.config";
-
+import { onAuthStateChanged } from "firebase/auth";
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
@@ -14,6 +14,7 @@ export const ProfileProvider = ({ children }) => {
     const user = await getDoc(userRef);
     setUser(user.data());
     setProfileIcon(user.data().photo);
+    console.log("asdfasdf");
   };
 
   const toggleProfileDropDown = () => {
@@ -22,6 +23,17 @@ export const ProfileProvider = ({ children }) => {
   const closeProfileDropDown = () => {
     setProfileDropDown(false);
   };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        getUser();
+        setUser(currentUser);
+      } else {
+        setUser();
+      }
+    });
+  }, []);
 
   return (
     <ProfileContext.Provider

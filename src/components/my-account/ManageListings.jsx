@@ -45,11 +45,16 @@ function ManageListings({ user }) {
   };
 
   const getOwnListings = async () => {
-    const listingsDocs = await Promise.all(
-      user.listings.map((listing) => getDoc(doc(db, "listings", listing)))
-    );
+    if (user.listings) {
+      const listingsDocs = await Promise.all(
+        user.listings.map((listing) => getDoc(doc(db, "listings", listing)))
+      );
 
-    setListings(listingsDocs.map((doc) => ({ data: doc.data(), id: doc.id })));
+      setListings(
+        listingsDocs.map((doc) => ({ data: doc.data(), id: doc.id }))
+      );
+    }
+
     setLoading(false);
   };
 

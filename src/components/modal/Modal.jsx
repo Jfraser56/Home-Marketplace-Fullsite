@@ -18,7 +18,7 @@ function Modal() {
   const [toggleForm, setToggleForm] = useState(false);
 
   const handleToggleForm = (e) => {
-    e.target.id === "signIn" ? setToggleForm(true) : setToggleForm(false);
+    e.target.id === "signUp" ? setToggleForm(true) : setToggleForm(false);
   };
 
   //Animate In
@@ -76,7 +76,7 @@ function Modal() {
             <ul className="flex space-x-5 border-b-2">
               <li>
                 <button
-                  id="signUp"
+                  id="signIn"
                   onClick={handleToggleForm}
                   className={`transition px-5 py-3 font-light hover:text-green-500 ${
                     !toggleForm && "text-green-500 border-b-4 border-green-500"
@@ -87,7 +87,7 @@ function Modal() {
               </li>
               <li>
                 <button
-                  id="signIn"
+                  id="signUp"
                   onClick={handleToggleForm}
                   className={`transition px-5 py-3 font-light hover:text-green-500 ${
                     toggleForm && "text-green-500 border-b-4 border-green-500"

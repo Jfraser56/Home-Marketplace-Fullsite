@@ -20,7 +20,7 @@
 * Add pagination to the listings when a user is browsing
 * Add a more polished mobile version of the site
 
-Use `npm install` to download all SellYourPlace dependencies, however the API keys are not included, therefore I reccomend just viewing the live app demo.
+Use `npm install` to download all SellYourPlace dependencies, however the API keys are not included, therefore I reccommend just viewing the live app demo.
 
 [Live App](https://symphonious-capybara-659a8d.netlify.app/)
 
